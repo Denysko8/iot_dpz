@@ -1,0 +1,42 @@
+@startuml
+abstract class User {
+    - int id
+    - String name
+    - String phone
+    + String getName()
+}
+
+class Patient {
+    - String medicalHistory
+    - String insuranceNumber
+    + void updateHistory()
+}
+
+class Staff {
+    - String role
+    - String specialization
+}
+
+class DentalRecord {
+    - Date date
+    - String diagnosis
+    - String treatmentNotes
+}
+
+class Service {
+    - String title
+    - double price
+}
+
+class XRayImage {
+    - String fileUrl
+    - Date uploadDate
+}
+
+User <|-- Patient
+User <|-- Staff
+Patient "1" *-- "many" DentalRecord : містить
+DentalRecord "1" *-- "0..many" XRayImage : включає
+DentalRecord "many" o-- "many" Service : надані послуги
+Staff "1" -- "many" DentalRecord : заповнює
+@endum

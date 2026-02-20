@@ -1,0 +1,26 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Пацієнт" as P
+actor "Стоматолог" as D
+actor "Адміністратор" as A
+
+rectangle "Eaglesoft System" {
+  usecase "Записатися на прийом" as UC1
+  usecase "Провести огляд та діагностику" as UC2
+  usecase "Лікування зуба" as UC3
+  usecase "Зробити рентген-знімок" as UC4
+  usecase "Скласти план лікування" as UC5
+  usecase "Оплатити послуги" as UC6
+}
+
+P --> UC1
+P --> UC6
+D --> UC2
+D --> UC3
+D --> UC5
+UC3 ..> UC4 : <<include>>
+A --> UC1
+A --> UC6
+@endum

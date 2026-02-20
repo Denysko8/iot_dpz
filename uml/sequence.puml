@@ -1,0 +1,26 @@
+@startuml
+actor "Пацієнт" as P
+actor "Стоматолог" as D
+participant "UI: Interface" as UI
+participant "Controller: VisitManager" as Ctrl
+participant "Service: StorageService" as Storage
+database "Database" as DB
+
+P -> D : Приходить на візит
+D -> UI : Відкриває картку пацієнта
+UI -> Ctrl : getPatientData(id)
+Ctrl -> DB : SQL Query
+DB --> Ctrl : Data
+Ctrl --> UI : Display Data
+
+D -> UI : Вводить дані про лікування та діагноз
+D -> UI : Завантажує рентген-фото
+UI -> Storage : uploadFile(image)
+Storage --> UI : return image_url
+
+UI -> Ctrl : saveVisitRecord(diagnosis, image_url)
+Ctrl -> DB : Insert into DentalRecords
+DB --> Ctrl : Success
+Ctrl --> UI : Повідомлення: "Дані збережено"
+UI --> D : Готово
+@endum
