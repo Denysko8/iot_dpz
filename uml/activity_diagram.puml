@@ -1,24 +1,18 @@
 @startuml
 start
-
-:Пацієнт обирає час та лікаря;
-:Адміністратор створює запис у системі;
-
-if (Пацієнт з'явився на прийом?) then (так)
-  :Проведення первинного огляду;
-  :Встановлення діагнозу;
-  
-  if (Потрібне додаткове обстеження?) then (так)
-    :Проведення рентген-діагностики;
-  else (ні)
+:User selects "Write a Review";
+:Enter rating and text;
+if (Is text empty?) then (yes)
+  :Show error "Field required";
+  stop
+else (no)
+  :Submit review;
+  :System validates content;
+  if (Spam detected?) then (yes)
+    :Reject automatically;
+  else (no)
+    :Send to Moderator;
   endif
-
-  :Складання плану лікування;
-  :Збереження плану в картку пацієнта;
-  stop
-else (ні)
-  :Скасування запису;
-  stop
 endif
-
-@endum
+stop
+@enduml

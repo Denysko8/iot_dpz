@@ -1,42 +1,32 @@
 @startuml
-abstract class User {
-    - int id
-    - String name
-    - String phone
-    + String getName()
+abstract class ReviewableEntity {
+    +String name
+    +String address
+    +Float averageRating
 }
 
-class Patient {
-    - String medicalHistory
-    - String insuranceNumber
-    + void updateHistory()
+class Restaurant extends ReviewableEntity {
+    +String cuisineType
+    +String menuLink
 }
 
-class Staff {
-    - String role
-    - String specialization
+class Hotel extends ReviewableEntity {
+    +Integer stars
 }
 
-class DentalRecord {
-    - Date date
-    - String diagnosis
-    - String treatmentNotes
+class Review {
+    +String comment
+    +Integer rating
+    +Date date
+    +Status status
+    +submit()
 }
 
-class Service {
-    - String title
-    - double price
+class User {
+    +String username
+    +String email
 }
 
-class XRayImage {
-    - String fileUrl
-    - Date uploadDate
-}
-
-User <|-- Patient
-User <|-- Staff
-Patient "1" *-- "many" DentalRecord : містить
-DentalRecord "1" *-- "0..many" XRayImage : включає
-DentalRecord "many" o-- "many" Service : надані послуги
-Staff "1" -- "many" DentalRecord : заповнює
-@endum
+User "1" -- "*" Review : creates
+Review "*" -- "1" Restaurant : belongs to
+@enduml

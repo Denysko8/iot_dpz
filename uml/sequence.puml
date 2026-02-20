@@ -1,26 +1,25 @@
 @startuml
-actor "Пацієнт" as P
-actor "Стоматолог" as D
-participant "UI: Interface" as UI
-participant "Controller: VisitManager" as Ctrl
-participant "Service: StorageService" as Storage
-database "Database" as DB
+actor User
+participant "System UI" as UI
+participant "Database" as DB
+actor Admin
 
-P -> D : Приходить на візит
-D -> UI : Відкриває картку пацієнта
-UI -> Ctrl : getPatientData(id)
-Ctrl -> DB : SQL Query
-DB --> Ctrl : Data
-Ctrl --> UI : Display Data
+User -> UI: Submit Review
+UI -> DB: Save with status "Pending"
+Admin -> UI: View Pending Reviews
+UI -> DB: Get latest review
 
-D -> UI : Вводить дані про лікування та діагноз
-D -> UI : Завантажує рентген-фото
-UI -> Storage : uploadFile(image)
-Storage --> UI : return image_url
-
-UI -> Ctrl : saveVisitRecord(diagnosis, image_url)
-Ctrl -> DB : Insert into DentalRecords
-DB --> Ctrl : Success
-Ctrl --> UI : Повідомлення: "Дані збережено"
-UI --> D : Готово
-@endum
+alt Approved
+    Admin -> UI: Approve
+    UI -> DB: Update status "Published"
+    UI -> User: Notify: "Review Published"
+else Rejected
+    Admin -> UI: Reject with comments
+    UI -> DB: Update status "Requires Changes"
+    UI -> User: Notify: "Please edit your review"
+    
+    note over User, UI: User edits and resubmits
+    User -> UI: Resubmit corrected review
+    UI -> DB: Update and notify Admin again
+end
+@enduml
