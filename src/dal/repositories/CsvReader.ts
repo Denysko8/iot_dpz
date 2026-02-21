@@ -1,6 +1,6 @@
 import { injectable } from 'tsyringe';
 import * as fs from 'fs';
-import * as csvParser from 'csv-parser';
+import csvParser from 'csv-parser';
 import { ICsvReader, CsvRow } from '../interfaces/ICsvReader';
 
 @injectable()
