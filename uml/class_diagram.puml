@@ -12,6 +12,20 @@ class Restaurant extends ReviewableEntity {
 
 class Hotel extends ReviewableEntity {
     +Integer stars
+    +Integer roomCount
+    +String priceRange
+    +List<String> amenities
+    +String phoneNumber
+    +String checkInTime
+    +String checkOutTime
+    +String website
+    +Boolean parkingAvailable
+    +Boolean wifiAvailable
+    +bookRoom(roomType: String, checkIn: Date, checkOut: Date): Boolean
+    +checkAvailability(date: Date): Integer
+    +getRoomTypes(): List<String>
+    +getAmenities(): List<String>
+    +calculatePrice(nights: Integer, roomType: String): Float
 }
 
 class Review {
@@ -29,4 +43,5 @@ class User {
 
 User "1" -- "*" Review : creates
 Review "*" -- "1" Restaurant : belongs to
+Review "*" -- "1" Hotel : belongs to
 @enduml
