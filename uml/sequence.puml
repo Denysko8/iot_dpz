@@ -1,0 +1,25 @@
+@startuml
+actor User
+participant "System UI" as UI
+participant "Database" as DB
+actor Admin
+
+User -> UI: Submit Review
+UI -> DB: Save with status "Pending"
+Admin -> UI: View Pending Reviews
+UI -> DB: Get latest review
+
+alt Approved
+    Admin -> UI: Approve
+    UI -> DB: Update status "Published"
+    UI -> User: Notify: "Review Published"
+else Rejected
+    Admin -> UI: Reject with comments
+    UI -> DB: Update status "Requires Changes"
+    UI -> User: Notify: "Please edit your review"
+    
+    note over User, UI: User edits and resubmits
+    User -> UI: Resubmit corrected review
+    UI -> DB: Update and notify Admin again
+end
+@enduml
