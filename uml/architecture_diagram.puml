@@ -10,7 +10,6 @@ skinparam component {
 
 package "Presentation Layer" {
   interface IDataImportController <<interface>>
-  interface IRestaurantController <<interface>>
   interface IHotelController <<interface>>
   interface IReviewController <<interface>>
   note right of IDataImportController : Інтерфейси без\nімплементації\n(поки що)
@@ -21,7 +20,6 @@ package "Business Logic Layer (BLL)" {
   class DataImportService <<implementation>> {
     - csvReader: ICsvReader
     - userRepository: IUserRepository
-    - restaurantRepository: IRestaurantRepository
     - hotelRepository: IHotelRepository
     - reviewRepository: IReviewRepository
     + importFromCsv(filePath): Promise<void>
@@ -40,11 +38,6 @@ package "Data Access Layer (DAL)" {
       + create(user): Promise<User>
       + findById(id): Promise<User>
       + saveMany(users): Promise<User[]>
-    }
-    interface IRestaurantRepository <<interface>> {
-      + create(restaurant): Promise<Restaurant>
-      + findById(id): Promise<Restaurant>
-      + saveMany(restaurants): Promise<Restaurant[]>
     }
     interface IHotelRepository <<interface>> {
       + create(hotel): Promise<Hotel>
@@ -66,10 +59,6 @@ package "Data Access Layer (DAL)" {
       - repository: Repository<User>
       - dataSource: DataSource
     }
-    class RestaurantRepository <<implementation>> {
-      - repository: Repository<Restaurant>
-      - dataSource: DataSource
-    }
     class HotelRepository <<implementation>> {
       - repository: Repository<Hotel>
       - dataSource: DataSource
@@ -81,7 +70,6 @@ package "Data Access Layer (DAL)" {
     
     ICsvReader <|.. CsvReader
     IUserRepository <|.. UserRepository
-    IRestaurantRepository <|.. RestaurantRepository
     IHotelRepository <|.. HotelRepository
     IReviewRepository <|.. ReviewRepository
   }
@@ -102,12 +90,6 @@ package "Domain Layer" {
     + averageRating: number
   }
   
-  class Restaurant {
-    + cuisineType: string
-    + menuLink: string
-    + reviews: Review[]
-  }
-  
   class Hotel {
     + stars: number
     + reviews: Review[]
@@ -120,8 +102,7 @@ package "Domain Layer" {
     + date: Date
     + status: ReviewStatus
     + userId: number
-    + restaurantId?: number
-    + hotelId?: number
+    + hotelId: number
   }
   
   enum ReviewStatus {
@@ -130,10 +111,8 @@ package "Domain Layer" {
     REJECTED
   }
   
-  ReviewableEntity <|-- Restaurant
   ReviewableEntity <|-- Hotel
   User "1" -- "*" Review
-  Restaurant "1" -- "*" Review
   Hotel "1" -- "*" Review
   Review -- ReviewStatus
 }
@@ -154,24 +133,20 @@ package "Infrastructure" {
 ' Dependencies (Dependency Injection)
 DataImportService ..> ICsvReader : uses
 DataImportService ..> IUserRepository : uses
-DataImportService ..> IRestaurantRepository : uses
 DataImportService ..> IHotelRepository : uses
 DataImportService ..> IReviewRepository : uses
 
 UserRepository ..> TypeORMDataSource : uses
-RestaurantRepository ..> TypeORMDataSource : uses
 HotelRepository ..> TypeORMDataSource : uses
 ReviewRepository ..> TypeORMDataSource : uses
 
 TypeORMDataSource ..> User : manages
-TypeORMDataSource ..> Restaurant : manages
 TypeORMDataSource ..> Hotel : manages
 TypeORMDataSource ..> Review : manages
 
 DIContainer ..> DataImportService : provides
 DIContainer ..> CsvReader : provides
 DIContainer ..> UserRepository : provides
-DIContainer ..> RestaurantRepository : provides
 DIContainer ..> HotelRepository : provides
 DIContainer ..> ReviewRepository : provides
 
