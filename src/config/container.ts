@@ -5,7 +5,6 @@ import { AppDataSource } from '../dal/dataSource';
 
 // DAL Repositories
 import { UserRepository } from '../dal/repositories/UserRepository';
-import { RestaurantRepository } from '../dal/repositories/RestaurantRepository';
 import { HotelRepository } from '../dal/repositories/HotelRepository';
 import { ReviewRepository } from '../dal/repositories/ReviewRepository';
 import { CsvReader } from '../dal/repositories/CsvReader';
@@ -15,7 +14,6 @@ import { DataImportService } from '../bll/services/DataImportService';
 
 // Інтерфейси
 import { IUserRepository } from '../dal/interfaces/IUserRepository';
-import { IRestaurantRepository } from '../dal/interfaces/IRestaurantRepository';
 import { IHotelRepository } from '../dal/interfaces/IHotelRepository';
 import { IReviewRepository } from '../dal/interfaces/IReviewRepository';
 import { ICsvReader } from '../dal/interfaces/ICsvReader';
@@ -38,10 +36,6 @@ export async function configureDependencies(): Promise<void> {
 
   container.register<IUserRepository>('IUserRepository', {
     useClass: UserRepository
-  });
-
-  container.register<IRestaurantRepository>('IRestaurantRepository', {
-    useClass: RestaurantRepository
   });
 
   container.register<IHotelRepository>('IHotelRepository', {

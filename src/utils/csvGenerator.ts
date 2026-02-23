@@ -2,20 +2,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 class CsvGenerator {
-  private readonly cuisineTypes = [
-    'Italian', 'Chinese', 'Japanese', 'Mexican', 'Indian',
-    'French', 'Thai', 'Greek', 'Spanish', 'Korean',
-    'Vietnamese', 'American', 'Turkish', 'Lebanese', 'Brazilian'
-  ];
-
-  private readonly restaurantNames = [
-    'La Bella Vista', 'Golden Dragon', 'Sakura Sushi', 'El Mariachi', 'Taj Mahal',
-    'Le Petit Bistro', 'Bangkok Palace', 'Athena Taverna', 'Casa Barcelona', 'Seoul Kitchen',
-    'Pho House', 'The Steakhouse', 'Kebab Corner', 'Cedar Garden', 'Rio Churrasco',
-    'Pizza Napoli', 'Dim Sum Palace', 'Tokyo Grill', 'Taco Fiesta', 'Curry Paradise',
-    'Chez Pierre', 'Spice Garden', 'Olympus Restaurant', 'Paella Bar', 'Kimchi House'
-  ];
-
   private readonly hotelNames = [
     'Grand Hotel Imperial', 'Sunset Beach Resort', 'Mountain View Lodge', 'City Center Plaza',
     'Royal Palace Hotel', 'Ocean Paradise', 'Metropolitan Inn', 'Garden Pavilion',
@@ -108,8 +94,6 @@ class CsvGenerator {
       'entityType',
       'entityName',
       'entityAddress',
-      'cuisineType',
-      'menuLink',
       'stars',
       'comment',
       'rating',
@@ -134,60 +118,30 @@ class CsvGenerator {
       });
     }
 
-    // Генеруємо унікальні заклади
-    const restaurants = this.restaurantNames.map(name => ({
-      name,
-      address: this.generateAddress(),
-      cuisineType: this.randomElement(this.cuisineTypes),
-      menuLink: `https://menu.example.com/${name.toLowerCase().replace(/\s+/g, '-')}`
-    }));
-
+    // Генеруємо унікальні готелі
     const hotels = this.hotelNames.map(name => ({
       name,
       address: this.generateAddress(),
       stars: this.random(1, 5)
     }));
 
-    // Генеруємо відгуки
+    // Генеруємо відгуки (тільки для готелів)
     for (let i = 0; i < rowCount; i++) {
       const user = this.randomElement(users);
-      const isRestaurantReview = Math.random() > 0.5;
-
-      let row: string[];
-
-      if (isRestaurantReview) {
-        const restaurant = this.randomElement(restaurants);
-        row = [
-          user.username,
-          user.email,
-          'restaurant',
-          restaurant.name,
-          restaurant.address,
-          restaurant.cuisineType,
-          restaurant.menuLink,
-          '', // stars (empty for restaurants)
-          this.randomElement(this.comments),
-          this.random(1, 5).toString(),
-          this.generateDate(),
-          this.randomElement(this.statuses)
-        ];
-      } else {
-        const hotel = this.randomElement(hotels);
-        row = [
-          user.username,
-          user.email,
-          'hotel',
-          hotel.name,
-          hotel.address,
-          '', // cuisineType (empty for hotels)
-          '', // menuLink (empty for hotels)
-          hotel.stars.toString(),
-          this.randomElement(this.comments),
-          this.random(1, 5).toString(),
-          this.generateDate(),
-          this.randomElement(this.statuses)
-        ];
-      }
+      const hotel = this.randomElement(hotels);
+      
+      const row = [
+        user.username,
+        user.email,
+        'hotel',
+        hotel.name,
+        hotel.address,
+        hotel.stars.toString(),
+        this.randomElement(this.comments),
+        this.random(1, 5).toString(),
+        this.generateDate(),
+        this.randomElement(this.statuses)
+      ];
 
       csvContent += row.map(field => `"${field}"`).join(',') + '\n';
     }
@@ -203,7 +157,6 @@ class CsvGenerator {
     console.log(`CSV file generated successfully: ${outputPath}`);
     console.log(`Total rows: ${rowCount}`);
     console.log(`Unique users: ${usersCount}`);
-    console.log(`Restaurants: ${restaurants.length}`);
     console.log(`Hotels: ${hotels.length}`);
   }
 }

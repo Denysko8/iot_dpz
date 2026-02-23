@@ -28,10 +28,6 @@ export class ReviewRepository implements IReviewRepository {
     return await this.repository.find({ where: { userId } });
   }
 
-  async findByRestaurantId(restaurantId: number): Promise<Review[]> {
-    return await this.repository.find({ where: { restaurantId } });
-  }
-
   async findByHotelId(hotelId: number): Promise<Review[]> {
     return await this.repository.find({ where: { hotelId } });
   }

@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from './User';
-import { Restaurant } from './Restaurant';
 import { Hotel } from './Hotel';
 import { ReviewStatus } from '../enums/ReviewStatus';
 
@@ -32,17 +31,10 @@ export class Review {
   @Column()
   userId!: number;
 
-  @ManyToOne(() => Restaurant, (restaurant: Restaurant) => restaurant.reviews, { nullable: true })
-  @JoinColumn({ name: 'restaurantId' })
-  restaurant?: Restaurant;
-
-  @Column({ nullable: true })
-  restaurantId?: number;
-
-  @ManyToOne(() => Hotel, (hotel: Hotel) => hotel.reviews, { nullable: true })
+  @ManyToOne(() => Hotel, (hotel: Hotel) => hotel.reviews)
   @JoinColumn({ name: 'hotelId' })
-  hotel?: Hotel;
+  hotel!: Hotel;
 
-  @Column({ nullable: true })
-  hotelId?: number;
+  @Column()
+  hotelId!: number;
 }
