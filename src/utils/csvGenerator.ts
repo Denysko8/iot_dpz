@@ -22,22 +22,22 @@ class CsvGenerator {
     'Austin', 'Jacksonville', 'Fort Worth', 'Columbus', 'Charlotte'
   ];
 
-  private readonly comments = [
-    'Excellent service and amazing food!',
-    'Great experience, will definitely come back.',
-    'Food was good but service could be better.',
-    'Outstanding quality and atmosphere!',
-    'Average experience, nothing special.',
-    'Disappointed with the quality.',
-    'Absolutely loved it! Highly recommend.',
-    'Good value for money.',
-    'Not what I expected, quite disappointing.',
-    'Perfect place for a special occasion!',
-    'Clean and comfortable, staff was friendly.',
-    'Beautiful location and great amenities.',
-    'Room was spacious and well-maintained.',
-    'Breakfast was delicious!',
-    'Wi-Fi was slow but everything else was good.'
+  private readonly reviewEntries: Array<{ comment: string; minRating: number; maxRating: number }> = [
+    { comment: 'Excellent service and amazing food!',             minRating: 9, maxRating: 10 },
+    { comment: 'Outstanding quality and atmosphere!',            minRating: 9, maxRating: 10 },
+    { comment: 'Absolutely loved it! Highly recommend.',         minRating: 9, maxRating: 10 },
+    { comment: 'Perfect place for a special occasion!',          minRating: 9, maxRating: 10 },
+    { comment: 'Great experience, will definitely come back.',   minRating: 8, maxRating: 9  },
+    { comment: 'Beautiful location and great amenities.',        minRating: 8, maxRating: 9  },
+    { comment: 'Clean and comfortable, staff was friendly.',     minRating: 7, maxRating: 8  },
+    { comment: 'Room was spacious and well-maintained.',         minRating: 7, maxRating: 8  },
+    { comment: 'Breakfast was delicious!',                       minRating: 7, maxRating: 8  },
+    { comment: 'Good value for money.',                          minRating: 6, maxRating: 7  },
+    { comment: 'Wi-Fi was slow but everything else was good.',   minRating: 5, maxRating: 7  },
+    { comment: 'Food was good but service could be better.',     minRating: 5, maxRating: 6  },
+    { comment: 'Average experience, nothing special.',           minRating: 4, maxRating: 5  },
+    { comment: 'Not what I expected, quite disappointing.',      minRating: 2, maxRating: 3  },
+    { comment: 'Disappointed with the quality.',                 minRating: 1, maxRating: 2  },
   ];
 
   private readonly firstNames = [
@@ -130,6 +130,7 @@ class CsvGenerator {
       const user = this.randomElement(users);
       const hotel = this.randomElement(hotels);
       
+      const entry = this.randomElement(this.reviewEntries);
       const row = [
         user.username,
         user.email,
@@ -137,8 +138,8 @@ class CsvGenerator {
         hotel.name,
         hotel.address,
         hotel.stars.toString(),
-        this.randomElement(this.comments),
-        this.random(1, 5).toString(),
+        entry.comment,
+        this.random(entry.minRating, entry.maxRating).toString(),
         this.generateDate(),
         this.randomElement(this.statuses)
       ];

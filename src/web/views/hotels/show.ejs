@@ -1,0 +1,109 @@
+<%- include('../partials/header') %>
+
+<nav aria-label="breadcrumb" class="mb-3">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/hotels">Готелі</a></li>
+    <li class="breadcrumb-item active"><%= hotel.name %></li>
+  </ol>
+</nav>
+
+<div class="row g-4">
+  <!-- Hotel Info Card -->
+  <div class="col-lg-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0"><i class="bi bi-building me-2"></i><%= hotel.name %></h4>
+      </div>
+      <div class="card-body">
+        <ul class="list-unstyled">
+          <li class="mb-3">
+            <small class="text-muted d-block">Зірки</small>
+            <% for(let i = 0; i < hotel.stars; i++) { %>
+              <i class="bi bi-star-fill text-warning fs-5"></i>
+            <% } %>
+            <% for(let i = hotel.stars; i < 5; i++) { %>
+              <i class="bi bi-star text-muted fs-5"></i>
+            <% } %>
+          </li>
+          <li class="mb-3">
+            <small class="text-muted d-block">Адреса</small>
+            <i class="bi bi-geo-alt text-danger me-1"></i><%= hotel.address %>
+          </li>
+          <li>
+            <small class="text-muted d-block">Середній рейтинг</small>
+            <span class="badge bg-success fs-6 px-3 py-2">
+              <i class="bi bi-bar-chart-fill me-1"></i><%= hotel.averageRating %> / 10
+            </span>
+          </li>
+          <li class="mt-3 d-flex gap-2">
+            <a href="/hotels/<%= hotel.id %>/edit" class="btn btn-outline-secondary flex-fill">
+              <i class="bi bi-pencil me-1"></i>Редагувати
+            </a>
+            <form action="/hotels/<%= hotel.id %>?_method=DELETE" method="POST" class="flex-fill"
+                  onsubmit="return confirm('Видалити готель?')">
+              <input type="hidden" name="_method" value="DELETE" />
+              <button class="btn btn-outline-danger w-100">
+                <i class="bi bi-trash me-1"></i>Видалити
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews -->
+  <div class="col-lg-8">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="mb-0"><i class="bi bi-chat-quote text-primary me-2"></i>
+        Відгуки (<%= hotel.reviews ? hotel.reviews.length : 0 %>)
+      </h5>
+      <a href="/reviews/new" class="btn btn-sm btn-primary">
+        <i class="bi bi-plus-lg me-1"></i>Додати відгук
+      </a>
+    </div>
+
+    <% if (!hotel.reviews || hotel.reviews.length === 0) { %>
+      <div class="alert alert-light border text-center">
+        <i class="bi bi-chat-dots me-2"></i>Відгуків ще немає.
+      </div>
+    <% } else { %>
+      <% hotel.reviews.forEach(review => { %>
+        <div class="card mb-3 shadow-sm review-card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div>
+                <strong><i class="bi bi-person-circle me-1"></i>
+                  <%= review.user ? review.user.username : 'Невідомий' %>
+                </strong>
+                <small class="text-muted ms-2">
+                  <%= new Date(review.date).toLocaleDateString('uk-UA') %>
+                </small>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-primary fs-6"><%= review.rating %>/10</span>
+                <span class="badge <%=
+                  review.status === 'APPROVED' ? 'bg-success' :
+                  review.status === 'REJECTED' ? 'bg-danger' : 'bg-warning text-dark'
+                %>"><%= review.status %></span>
+              </div>
+            </div>
+            <p class="mb-2"><%= review.comment %></p>
+            <div class="d-flex gap-2">
+              <a href="/reviews/<%= review.id %>/edit" class="btn btn-xs btn-outline-secondary">
+                <i class="bi bi-pencil"></i>
+              </a>
+              <form action="/reviews/<%= review.id %>?_method=DELETE" method="POST"
+                    onsubmit="return confirm('Видалити відгук?')">
+                <input type="hidden" name="_method" value="DELETE" />
+                <button class="btn btn-xs btn-outline-danger"><i class="bi bi-trash"></i></button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

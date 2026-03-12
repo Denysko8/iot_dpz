@@ -1,0 +1,60 @@
+<%- include('../partials/header') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h2 mb-0"><i class="bi bi-building text-primary me-2"></i>Готелі</h1>
+  <a href="/hotels/new" class="btn btn-primary">
+    <i class="bi bi-plus-lg me-1"></i>Додати готель
+  </a>
+</div>
+
+<% if (hotels.length === 0) { %>
+  <div class="alert alert-info text-center">
+    <i class="bi bi-info-circle me-2"></i>Готелів поки немає.
+    <a href="/hotels/new">Додайте перший!</a>
+  </div>
+<% } else { %>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    <% hotels.forEach(hotel => { %>
+      <div class="col">
+        <div class="card h-100 shadow-sm hotel-card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="card-title mb-0">
+                <a href="/hotels/<%= hotel.id %>" class="text-decoration-none text-dark">
+                  <%= hotel.name %>
+                </a>
+              </h5>
+              <span class="badge bg-warning text-dark ms-2">
+                <% for(let i = 0; i < hotel.stars; i++) { %><i class="bi bi-star-fill"></i><% } %>
+              </span>
+            </div>
+            <p class="card-text text-muted small mb-2">
+              <i class="bi bi-geo-alt me-1"></i><%= hotel.address %>
+            </p>
+            <div class="d-flex align-items-center">
+              <i class="bi bi-bar-chart-fill text-success me-1"></i>
+              <span class="text-success fw-semibold">Рейтинг: <%= hotel.averageRating %>/10</span>
+            </div>
+          </div>
+          <div class="card-footer bg-transparent d-flex gap-2">
+            <a href="/hotels/<%= hotel.id %>" class="btn btn-sm btn-outline-primary flex-fill">
+              <i class="bi bi-eye me-1"></i>Деталі
+            </a>
+            <a href="/hotels/<%= hotel.id %>/edit" class="btn btn-sm btn-outline-secondary flex-fill">
+              <i class="bi bi-pencil me-1"></i>Редагувати
+            </a>
+            <form action="/hotels/<%= hotel.id %>?_method=DELETE" method="POST" class="flex-fill"
+                  onsubmit="return confirm('Видалити готель «<%= hotel.name %>»?')">
+              <input type="hidden" name="_method" value="DELETE" />
+              <button type="submit" class="btn btn-sm btn-outline-danger w-100">
+                <i class="bi bi-trash me-1"></i>Видалити
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+<% } %>
+
+<%- include('../partials/footer') %>
