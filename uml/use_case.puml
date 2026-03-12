@@ -6,17 +6,14 @@ actor "Moderator" as mod
 actor "Admin" as adm
 
 rectangle TripAdvisor {
-  usecase "Add New Restaurant" as UC1
   usecase "Add New Hotel" as UC2
   usecase "Add Review" as UC3
   usecase "Edit Review" as UC4
   usecase "Delete Review" as UC5
   usecase "Rate Establishment" as UC6
   usecase "View Reviews" as UC7
-  usecase "Search Restaurants" as UC8
   usecase "Search Hotels" as UC9
   usecase "Filter by Rating" as UC10
-  usecase "Filter by Cuisine" as UC11
   usecase "View Details" as UC12
   usecase "Moderate Review" as UC13
   usecase "Report Review" as UC14
@@ -24,17 +21,14 @@ rectangle TripAdvisor {
   usecase "Manage User Accounts" as UC16
 }
 
-ow -- UC1
 ow -- UC2
 us -- UC3
 us -- UC4
 us -- UC5
 us -- UC6
 us -- UC7
-us -- UC8
 us -- UC9
 us -- UC10
-us -- UC11
 us -- UC12
 us -- UC14
 us -- UC15
@@ -43,8 +37,6 @@ adm -- UC16
 
 UC3 ..> UC6 : <<include>>
 UC4 ..> UC13 : <<extend>>
-UC8 ..> UC10 : <<extend>>
-UC8 ..> UC11 : <<extend>>
 UC9 ..> UC10 : <<extend>>
 UC12 ..> UC7 : <<include>>
 UC14 ..> UC13 : <<include>>

@@ -1,0 +1,159 @@
+@startuml Architecture
+!define RECTANGLE class
+
+skinparam packageStyle rectangle
+skinparam component {
+  BackgroundColor<<interface>> LightBlue
+  BackgroundColor<<implementation>> LightGreen
+  BorderColor Black
+}
+
+package "Presentation Layer" {
+  interface IDataImportController <<interface>>
+  interface IHotelController <<interface>>
+  interface IReviewController <<interface>>
+  note right of IDataImportController : Інтерфейси без\nімплементації\n(поки що)
+}
+
+package "Business Logic Layer (BLL)" {
+  interface IDataImportService <<interface>>
+  class DataImportService <<implementation>> {
+    - csvReader: ICsvReader
+    - userRepository: IUserRepository
+    - hotelRepository: IHotelRepository
+    - reviewRepository: IReviewRepository
+    + importFromCsv(filePath): Promise<void>
+    - updateAverageRatings(): Promise<void>
+  }
+  
+  IDataImportService <|.. DataImportService
+}
+
+package "Data Access Layer (DAL)" {
+  package "Interfaces" {
+    interface ICsvReader <<interface>> {
+      + readCsv(filePath): Promise<CsvRow[]>
+    }
+    interface IUserRepository <<interface>> {
+      + create(user): Promise<User>
+      + findById(id): Promise<User>
+      + saveMany(users): Promise<User[]>
+    }
+    interface IHotelRepository <<interface>> {
+      + create(hotel): Promise<Hotel>
+      + findById(id): Promise<Hotel>
+      + saveMany(hotels): Promise<Hotel[]>
+    }
+    interface IReviewRepository <<interface>> {
+      + create(review): Promise<Review>
+      + findById(id): Promise<Review>
+      + saveMany(reviews): Promise<Review[]>
+    }
+  }
+  
+  package "Implementations" {
+    class CsvReader <<implementation>> {
+      + readCsv(filePath): Promise<CsvRow[]>
+    }
+    class UserRepository <<implementation>> {
+      - repository: Repository<User>
+      - dataSource: DataSource
+    }
+    class HotelRepository <<implementation>> {
+      - repository: Repository<Hotel>
+      - dataSource: DataSource
+    }
+    class ReviewRepository <<implementation>> {
+      - repository: Repository<Review>
+      - dataSource: DataSource
+    }
+    
+    ICsvReader <|.. CsvReader
+    IUserRepository <|.. UserRepository
+    IHotelRepository <|.. HotelRepository
+    IReviewRepository <|.. ReviewRepository
+  }
+}
+
+package "Domain Layer" {
+  class User {
+    + id: number
+    + username: string
+    + email: string
+    + reviews: Review[]
+  }
+  
+  abstract class ReviewableEntity {
+    + id: number
+    + name: string
+    + address: string
+    + averageRating: number
+  }
+  
+  class Hotel {
+    + stars: number
+    + reviews: Review[]
+  }
+  
+  class Review {
+    + id: number
+    + comment: string
+    + rating: number
+    + date: Date
+    + status: ReviewStatus
+    + userId: number
+    + hotelId: number
+  }
+  
+  enum ReviewStatus {
+    PENDING
+    APPROVED
+    REJECTED
+  }
+  
+  ReviewableEntity <|-- Hotel
+  User "1" -- "*" Review
+  Hotel "1" -- "*" Review
+  Review -- ReviewStatus
+}
+
+package "Infrastructure" {
+  class DIContainer <<singleton>> {
+    + configureDependencies(): Promise<void>
+    + resolve<T>(token): T
+  }
+  
+  class TypeORMDataSource {
+    + type: sqlite
+    + database: database.sqlite
+    + entities: Entity[]
+  }
+}
+
+' Dependencies (Dependency Injection)
+DataImportService ..> ICsvReader : uses
+DataImportService ..> IUserRepository : uses
+DataImportService ..> IHotelRepository : uses
+DataImportService ..> IReviewRepository : uses
+
+UserRepository ..> TypeORMDataSource : uses
+HotelRepository ..> TypeORMDataSource : uses
+ReviewRepository ..> TypeORMDataSource : uses
+
+TypeORMDataSource ..> User : manages
+TypeORMDataSource ..> Hotel : manages
+TypeORMDataSource ..> Review : manages
+
+DIContainer ..> DataImportService : provides
+DIContainer ..> CsvReader : provides
+DIContainer ..> UserRepository : provides
+DIContainer ..> HotelRepository : provides
+DIContainer ..> ReviewRepository : provides
+
+note bottom of DIContainer
+  Інверсія управління (IoC)
+  та впровадження залежностей (DI)
+  через TSyringe
+end note
+
+@enduml

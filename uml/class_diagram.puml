@@ -5,11 +5,6 @@ abstract class ReviewableEntity {
     +Float averageRating
 }
 
-class Restaurant extends ReviewableEntity {
-    +String cuisineType
-    +String menuLink
-}
-
 class Hotel extends ReviewableEntity {
     +Integer stars
     +Integer roomCount
@@ -42,6 +37,5 @@ class User {
 }
 
 User "1" -- "*" Review : creates
-Review "*" -- "1" Restaurant : belongs to
 Review "*" -- "1" Hotel : belongs to
 @enduml

@@ -1,0 +1,28 @@
+{
+  "name": "iot-lab2",
+  "version": "1.0.0",
+  "description": "IoT Lab 2 - Three-tier architecture with DI",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "generate-csv": "ts-node src/utils/csvGenerator.ts",
+    "import-data": "ts-node src/index.ts",
+    "dev": "ts-node src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "csv-parser": "^3.0.0",
+    "reflect-metadata": "^0.2.1",
+    "sqlite3": "^5.1.7",
+    "tsyringe": "^4.8.0",
+    "typeorm": "^0.3.20"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.33",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
