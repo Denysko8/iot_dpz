@@ -1,0 +1,98 @@
+/* Custom styles for Hotel Review System */
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+}
+
+main {
+  flex: 1;
+}
+
+/* Hotel cards */
+.hotel-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border: none;
+  border-top: 4px solid #0d6efd;
+}
+
+.hotel-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Review cards */
+.review-card {
+  border-left: 4px solid #0d6efd;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+}
+
+/* Extra small button */
+.btn-xs {
+  padding: 0.15rem 0.45rem;
+  font-size: 0.78rem;
+  border-radius: 0.3rem;
+}
+
+/* Rating badge */
+.badge.fs-6 {
+  font-size: 0.85rem !important;
+}
+
+/* Table */
+.table thead th {
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  font-size: 0.85rem;
+}
+
+/* Breadcrumb */
+.breadcrumb-item a {
+  text-decoration: none;
+  color: #0d6efd;
+}
+
+.breadcrumb-item a:hover {
+  text-decoration: underline;
+}
+
+/* Navbar */
+.navbar-brand {
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
+}
+
+/* Cards with color border */
+.card-header {
+  font-size: 1rem;
+}
+
+/* Forms */
+.form-label {
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+
+/* Star radio selection */
+.form-check {
+  padding-left: 1.5em;
+}
+
+.form-check-input:checked + .form-check-label {
+  opacity: 1;
+}
+
+.form-check-label {
+  opacity: 0.5;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.form-check-input:checked + .form-check-label,
+.form-check:hover .form-check-label {
+  opacity: 1;
+}

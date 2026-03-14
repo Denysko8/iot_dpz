@@ -8,19 +8,26 @@
     "start": "node dist/index.js",
     "generate-csv": "ts-node src/utils/csvGenerator.ts",
     "import-data": "ts-node src/index.ts",
-    "dev": "ts-node src/index.ts"
+    "dev": "ts-node src/index.ts",
+    "web": "ts-node src/web/server.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "csv-parser": "^3.0.0",
+    "ejs": "^5.0.1",
+    "express": "^5.2.1",
+    "method-override": "^3.0.0",
     "reflect-metadata": "^0.2.1",
     "sqlite3": "^5.1.7",
     "tsyringe": "^4.8.0",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
+    "@types/ejs": "^3.1.5",
+    "@types/express": "^5.0.6",
+    "@types/method-override": "^3.0.0",
     "@types/node": "^20.19.33",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"

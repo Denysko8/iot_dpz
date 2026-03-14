@@ -1,0 +1,53 @@
+<%- include('../partials/header') %>
+
+<nav aria-label="breadcrumb" class="mb-3">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/users">Користувачі</a></li>
+    <li class="breadcrumb-item"><a href="/users/<%= user.id %>"><%= user.username %></a></li>
+    <li class="breadcrumb-item active">Редагувати</li>
+  </ol>
+</nav>
+
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-header bg-secondary text-white">
+        <h4 class="mb-0"><i class="bi bi-pencil me-2"></i>Редагувати користувача</h4>
+      </div>
+      <div class="card-body p-4">
+
+        <% if (errors.length > 0) { %>
+          <div class="alert alert-danger">
+            <ul class="mb-0 ps-3">
+              <% errors.forEach(e => { %><li><%= e %></li><% }) %>
+            </ul>
+          </div>
+        <% } %>
+
+        <form action="/users/<%= user.id %>?_method=PUT" method="POST" novalidate>
+          <input type="hidden" name="_method" value="PUT" />
+          <div class="mb-3">
+            <label for="username" class="form-label fw-semibold">Ім'я користувача</label>
+            <input type="text" id="username" name="username" class="form-control"
+                   value="<%= user.username %>" required />
+          </div>
+          <div class="mb-4">
+            <label for="email" class="form-label fw-semibold">Email</label>
+            <input type="email" id="email" name="email" class="form-control"
+                   value="<%= user.email %>" required />
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-warning flex-fill">
+              <i class="bi bi-check-lg me-1"></i>Зберегти зміни
+            </button>
+            <a href="/users/<%= user.id %>" class="btn btn-outline-secondary flex-fill">
+              <i class="bi bi-x me-1"></i>Скасувати
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

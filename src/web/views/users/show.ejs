@@ -1,0 +1,76 @@
+<%- include('../partials/header') %>
+
+<nav aria-label="breadcrumb" class="mb-3">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/users">Користувачі</a></li>
+    <li class="breadcrumb-item active"><%= user.username %></li>
+  </ol>
+</nav>
+
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0"><i class="bi bi-person-circle me-2"></i><%= user.username %></h4>
+      </div>
+      <div class="card-body">
+        <ul class="list-unstyled mb-0">
+          <li class="mb-2"><small class="text-muted d-block">Email</small>
+            <i class="bi bi-envelope me-1 text-primary"></i><%= user.email %>
+          </li>
+          <li><small class="text-muted d-block">Відгуків</small>
+            <span class="badge bg-primary fs-6"><%= user.reviews ? user.reviews.length : 0 %></span>
+          </li>
+        </ul>
+      </div>
+      <div class="card-footer d-flex gap-2">
+        <a href="/users/<%= user.id %>/edit" class="btn btn-outline-secondary flex-fill">
+          <i class="bi bi-pencil me-1"></i>Редагувати
+        </a>
+        <form action="/users/<%= user.id %>?_method=DELETE" method="POST" class="flex-fill"
+              onsubmit="return confirm('Видалити користувача?')">
+          <input type="hidden" name="_method" value="DELETE" />
+          <button class="btn btn-outline-danger w-100">
+            <i class="bi bi-trash me-1"></i>Видалити
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <h5 class="mb-3"><i class="bi bi-star text-warning me-2"></i>
+      Відгуки (<%= user.reviews ? user.reviews.length : 0 %>)
+    </h5>
+
+    <% if (!user.reviews || user.reviews.length === 0) { %>
+      <div class="alert alert-light border text-center">
+        <i class="bi bi-chat-dots me-2"></i>Відгуків ще немає.
+      </div>
+    <% } else { %>
+      <% user.reviews.forEach(review => { %>
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+              <a href="/hotels/<%= review.hotel ? review.hotel.id : '' %>" class="fw-semibold text-decoration-none">
+                <i class="bi bi-building me-1 text-primary"></i>
+                <%= review.hotel ? review.hotel.name : '—' %>
+              </a>
+              <div>
+                <span class="badge bg-primary me-1"><%= review.rating %>/10</span>
+                <span class="badge <%=
+                  review.status === 'APPROVED' ? 'bg-success' :
+                  review.status === 'REJECTED' ? 'bg-danger' : 'bg-warning text-dark'
+                %>"><%= review.status %></span>
+              </div>
+            </div>
+            <p class="mb-1 text-muted small"><%= review.comment %></p>
+            <small class="text-muted"><%= new Date(review.date).toLocaleDateString('uk-UA') %></small>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

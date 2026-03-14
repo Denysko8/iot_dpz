@@ -117,7 +117,7 @@ export class DataImportService implements IDataImportService {
       const reviews = await this.reviewRepository.findByHotelId(hotel.id);
       if (reviews.length > 0) {
         const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
-        hotel.averageRating = sum / reviews.length;
+        hotel.averageRating = Math.round((sum / reviews.length) * 10) / 10;
         await this.hotelRepository.save(hotel);
       }
     }

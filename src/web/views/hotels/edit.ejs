@@ -1,0 +1,67 @@
+<%- include('../partials/header') %>
+
+<nav aria-label="breadcrumb" class="mb-3">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/hotels">Готелі</a></li>
+    <li class="breadcrumb-item"><a href="/hotels/<%= hotel.id %>"><%= hotel.name %></a></li>
+    <li class="breadcrumb-item active">Редагувати</li>
+  </ol>
+</nav>
+
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-secondary text-white">
+        <h4 class="mb-0"><i class="bi bi-pencil me-2"></i>Редагувати готель</h4>
+      </div>
+      <div class="card-body p-4">
+
+        <% if (errors.length > 0) { %>
+          <div class="alert alert-danger">
+            <ul class="mb-0 ps-3">
+              <% errors.forEach(e => { %><li><%= e %></li><% }) %>
+            </ul>
+          </div>
+        <% } %>
+
+        <form action="/hotels/<%= hotel.id %>?_method=PUT" method="POST" novalidate>
+          <input type="hidden" name="_method" value="PUT" />
+          <div class="mb-3">
+            <label for="name" class="form-label fw-semibold">Назва готелю</label>
+            <input type="text" id="name" name="name" class="form-control"
+                   value="<%= hotel.name %>" required />
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label fw-semibold">Адреса</label>
+            <input type="text" id="address" name="address" class="form-control"
+                   value="<%= hotel.address %>" required />
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Кількість зірок</label>
+            <div class="d-flex gap-3">
+              <% [1,2,3,4,5].forEach(s => { %>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="stars" id="stars<%= s %>"
+                         value="<%= s %>" <%= (hotel.stars === s) ? 'checked' : '' %> required />
+                  <label class="form-check-label" for="stars<%= s %>">
+                    <% for(let i=0;i<s;i++){%><i class="bi bi-star-fill text-warning"></i><%}%>
+                  </label>
+                </div>
+              <% }) %>
+            </div>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-warning flex-fill">
+              <i class="bi bi-check-lg me-1"></i>Зберегти зміни
+            </button>
+            <a href="/hotels/<%= hotel.id %>" class="btn btn-outline-secondary flex-fill">
+              <i class="bi bi-x me-1"></i>Скасувати
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
