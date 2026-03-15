@@ -9,7 +9,8 @@
     "generate-csv": "ts-node src/utils/csvGenerator.ts",
     "import-data": "ts-node src/index.ts",
     "dev": "ts-node src/index.ts",
-    "web": "ts-node src/web/server.ts"
+    "web": "ts-node src/web/server.ts",
+    "lab-4:start": "ts-node -P lab-4/tsconfig.json lab-4/src/main.ts"
   },
   "keywords": [],
   "author": "",
@@ -18,11 +19,14 @@
     "csv-parser": "^3.0.0",
     "ejs": "^5.0.1",
     "express": "^5.2.1",
+    "kafkajs": "^2.2.4",
     "method-override": "^3.0.0",
     "reflect-metadata": "^0.2.1",
+    "redis": "^4.7.1",
     "sqlite3": "^5.1.7",
     "tsyringe": "^4.8.0",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/ejs": "^3.1.5",
