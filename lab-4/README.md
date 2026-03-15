@@ -46,24 +46,6 @@ sudo docker compose -f /mnt/c/Users/admin/Desktop/iot_dpz/lab-4/docker-compose.y
 sudo docker compose -f /mnt/c/Users/admin/Desktop/iot_dpz/lab-4/docker-compose.yml ps
 ```
 
-## Налаштування без Docker Desktop (Windows)
-
-### Redis (локально через winget)
-
-```bash
-winget install -e --id Memurai.MemuraiDeveloper
-```
-
-Після встановлення сервіс Redis стартує автоматично на `localhost:6379`.
-
-Перевірка:
-
-```bash
-redis-cli ping
-```
-
-Очікувано: `PONG`.
-
 ## Перемикання виводу без змін коду
 
 Змініть поле `output.strategy` у `lab-4/config/app.config.json`:
