@@ -1,0 +1,24 @@
+{
+  "input": {
+    "type": "xlsx",
+    "filePath": "./lab-4/ParkingViolationCodes_March_2024.xlsx"
+  },
+  "output": {
+    "strategy": "kafka",
+    "console": {
+      "pretty": true
+    },
+    "file": {
+      "outputPath": "./lab-4/output/parking-violations.jsonl"
+    },
+    "kafka": {
+      "brokers": ["localhost:9092"],
+      "clientId": "lab-4-producer",
+      "topic": "parking-violations"
+    },
+    "redis": {
+      "url": "redis://localhost:6379",
+      "key": "parking:violations"
+    }
+  }
+}
